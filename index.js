@@ -5,6 +5,7 @@ const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
 require("dotenv").config();
+// Analytics removed as it is for Next.js and causes syntax errors in CommonJS
 
 const app = express();
 
@@ -47,8 +48,8 @@ app.post("/api/apply", upload.single("attachment"), async (req, res) => {
         const emailStyles = `
             <style>
                 body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
-                .container { max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; }
-                .header { text-align: center; margin-bottom: 30px; }
+                .container { max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; background-color: #ffffff; }
+                .header { text-align: center; margin-bottom: 30px; background-color: #ffffff; padding: 10px; border-radius: 8px 8px 0 0; }
                 .logo { width: 120px; height: auto; }
                 .content { margin-bottom: 30px; }
                 .footer { font-size: 14px; color: #777; border-top: 1px solid #eee; padding-top: 20px; text-align: center; }
@@ -79,7 +80,6 @@ app.post("/api/apply", upload.single("attachment"), async (req, res) => {
                                     <tr><td class="label">Name:</td><td>${name}</td></tr>
                                     <tr><td class="label">Email:</td><td>${email}</td></tr>
                                     <tr><td class="label">Position:</td><td class="highlight">${position}</td></tr>
-                                    <tr><td class="label">Note:</td><td>${note || "N/A"}</td></tr>
                                 </table>
                             </div>
                             <div class="footer">
