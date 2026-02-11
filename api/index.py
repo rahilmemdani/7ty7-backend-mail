@@ -222,7 +222,7 @@ async def sayhello(
                     <div class="content">
                         <p>Hey <span class="highlight">{fullName.split(' ')[0]}</span> 👋</p>
                         <p>Thank you for contacting <strong>7ty7</strong>! We have received your inquiry and our team is already reviewing it.</p>
-                        <p>We will contact you shortly to discuss how we can make your next event truly magical.</p>
+                        <p>We will contact you shortly to answer all the questions you have for us.</p>
                         <br/>
                         <p>Best,<br/>Team 7ty7</p>
                     </div>
