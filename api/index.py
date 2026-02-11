@@ -28,22 +28,16 @@ LOGO_PATH = BASE_DIR / "assets" / "logo.png"
 # Shared HTML Styles
 EMAIL_STYLES = """
 <style>
-    body { font-family: 'Inter', 'Segoe UI', Arial, sans-serif; line-height: 1.5; color: #1a1a1a; margin: 0; padding: 0; background-color: #f8f9fa; }
-    .container { max-width: 540px; margin: 40px auto; padding: 0; border: 1px solid #e0e0e0; border-radius: 12px; background-color: #ffffff; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-    .header { text-align: center; padding: 32px 20px; background-color: #ffffff; border-bottom: 1px solid #f0f0f0; }
-    .logo { width: 130px; height: auto; display: block; margin: 0 auto; }
-    .content { padding: 32px 40px; }
-    .title { font-size: 22px; font-weight: 700; color: #111; margin-bottom: 8px; margin-top: 0; }
-    .subtitle { font-size: 15px; color: #666; margin-bottom: 24px; }
-    .footer { font-size: 13px; color: #999; padding: 24px; text-align: center; background-color: #fafafa; border-top: 1px solid #f0f0f0; }
-    .highlight { color: #f43f5e; font-weight: 600; }
-    .details-card { background-color: #fcfcfc; border: 1px solid #f0f0f0; border-radius: 8px; margin-top: 16px; width: 100%; border-collapse: separate; }
-    .details-card td { padding: 12px 16px; font-size: 15px; border-bottom: 1px solid #f5f5f5; }
-    .details-card tr:last-child td { border-bottom: none; }
-    .label { color: #888; width: 30%; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .value { color: #222; font-weight: 500; }
-    p { margin: 0 0 16px 0; font-size: 16px; color: #444; }
-    .btn { display: inline-block; padding: 12px 24px; background-color: #111; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin-top: 8px; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; background-color: #ffffff; }
+    .header { text-align: center; margin-bottom: 30px; background-color: #ffffff; padding: 20px; border-radius: 8px 8px 0 0; }
+    .logo { width: 140px; height: auto; display: block; margin: 0 auto; }
+    .content { margin-bottom: 30px; padding: 0 10px; }
+    .footer { font-size: 14px; color: #777; border-top: 1px solid #eee; padding-top: 20px; text-align: center; }
+    .highlight { color: #f43f5e; font-weight: bold; }
+    .details-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .details-table td { padding: 12px; border-bottom: 1px solid #f9f9f9; }
+    .label { font-weight: bold; color: #555; width: 30%; }
 </style>
 """
 
@@ -81,16 +75,16 @@ async def apply(
                         <img src="cid:7ty7logo" class="logo" alt="7ty7 Logo" />
                     </div>
                     <div class="content">
-                        <h2 class="title">Application Received</h2>
-                        <p class="subtitle">A new talent has joined the pipeline via the portal.</p>
-                        <table class="details-card">
-                            <tr><td class="label">Name</td><td class="value">{name}</td></tr>
-                            <tr><td class="label">Email</td><td class="value">{email}</td></tr>
-                            <tr><td class="label">Role</td><td class="value highlight">{position}</td></tr>
+                        <h2 style="color: #111;">New Application Received</h2>
+                        <p>TAADAA! A new talent has applied through the portal.</p>
+                        <table class="details-table">
+                            <tr><td class="label">Name:</td><td>{name}</td></tr>
+                            <tr><td class="label">Email:</td><td>{email}</td></tr>
+                            <tr><td class="label">Position:</td><td class="highlight">{position}</td></tr>
                         </table>
                     </div>
                     <div class="footer">
-                        <p>Automated Recruitment System &bull; 7ty7</p>
+                        <p>Automated by 7ty7 Systems</p>
                     </div>
                 </div>
             </body>
@@ -102,7 +96,7 @@ async def apply(
         app_msg = MIMEMultipart()
         app_msg["From"] = f'"Team 7ty7" <{email_user}>'
         app_msg["To"] = email
-        app_msg["Subject"] = f"Application Received: {position} | 7ty7"
+        app_msg["Subject"] = f"Thanks for reaching out, {name.split(' ')[0]}!"
 
         app_html = f"""
         <html>
@@ -114,12 +108,13 @@ async def apply(
                     </div>
                     <div class="content">
                         <p>Hey <span class="highlight">{name.split(' ')[0]}</span> 👋</p>
-                        <p>Thanks for reaching out! We’ve successfully received your application for the <span style="font-weight: 600;">{position}</span> position.</p>
-                        <p>Our talent team is currently reviewing your profile and CV. We'll be in touch soon if there's a match!</p>
-                        <p style="margin-top: 32px; margin-bottom: 0;">Stay tuned,<br/><span style="font-weight: 700; color: #111;">Team 7ty7</span></p>
+                        <p>Thanks for reaching out. We’ve received your application for <strong>{position}</strong>.</p>
+                        <p>Our talent team will review your CV. Stay tuned!</p>
+                        <br/>
+                        <p>Best,<br/>Team 7ty7</p>
                     </div>
                     <div class="footer">
-                        <p>&copy; 2024 7ty7 Entertainment. All rights reserved.</p>
+                        <p>&copy; 2026 7ty7 Entertainment. All rights reserved.</p>
                     </div>
                 </div>
             </body>
