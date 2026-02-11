@@ -23,7 +23,7 @@ app.add_middleware(
 
 # Logo path
 BASE_DIR = Path(__file__).resolve().parent.parent
-LOGO_PATH = BASE_DIR / "assets" / "logo.svg"
+LOGO_PATH = BASE_DIR / "assets" / "logo.png"
 
 # Shared HTML Styles
 EMAIL_STYLES = """
@@ -31,7 +31,7 @@ EMAIL_STYLES = """
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
     .container { max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; background-color: #ffffff; }
     .header { text-align: center; margin-bottom: 30px; background-color: #ffffff; padding: 20px; border-radius: 8px 8px 0 0; }
-    .logo { width: 120px; height: auto; display: block; margin: 0 auto; }
+    .logo { width: 140px; height: auto; display: block; margin: 0 auto; }
     .content { margin-bottom: 30px; padding: 0 10px; }
     .footer { font-size: 14px; color: #777; border-top: 1px solid #eee; padding-top: 20px; text-align: center; }
     .highlight { color: #f43f5e; font-weight: bold; }
@@ -127,9 +127,10 @@ async def apply(
             logo_data = f.read()
             
         for msg in [hr_msg, app_msg]:
-            logo_part = MIMEApplication(logo_data, Name="logo.svg")
+            logo_part = MIMEApplication(logo_data, Name="logo.png")
             logo_part.add_header("Content-ID", "<7ty7logo>")
-            logo_part.add_header("Content-Disposition", "inline", filename="logo.svg")
+            logo_part.add_header("Content-Disposition", "inline", filename="logo.png")
+            logo_part.add_header("Content-Type", "image/png")
             msg.attach(logo_part)
 
         # Attach CV to HR email
