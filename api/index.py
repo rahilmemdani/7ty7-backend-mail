@@ -84,7 +84,7 @@ async def apply(
                         </table>
                     </div>
                     <div class="footer">
-                        <p>Automated by 7ty7 Systems</p>
+                        <p>&copy; 2026 7ty7 Entertainment. All rights reserved.</p>
                     </div>
                 </div>
             </body>
@@ -197,7 +197,7 @@ async def sayhello(
                         </table>
                     </div>
                     <div class="footer">
-                        <p>Automated by 7ty7 Systems</p>
+                        <p>&copy; 2026 7ty7 Entertainment. All rights reserved.</p>
                     </div>
                 </div>
             </body>
@@ -221,9 +221,8 @@ async def sayhello(
                     </div>
                     <div class="content">
                         <p>Hey <span class="highlight">{fullName.split(' ')[0]}</span> 👋</p>
-                        <p>Thanks for getting in touch! We've received your message and our team is already on it.</p>
-                        <p>Whether it's about an upcoming event or just a friendly hello, we're excited to connect with you.</p>
-                        <p>Talk soon!</p>
+                        <p>Thank you for contacting <strong>7ty7</strong>! We have received your inquiry and our team is already reviewing it.</p>
+                        <p>We will contact you shortly to discuss how we can make your next event truly magical.</p>
                         <br/>
                         <p>Best,<br/>Team 7ty7</p>
                     </div>
