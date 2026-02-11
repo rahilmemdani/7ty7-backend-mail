@@ -187,8 +187,8 @@ async def sayhello(
                         <img src="cid:7ty7logo" class="logo" alt="7ty7 Logo" />
                     </div>
                     <div class="content">
-                        <h2 style="color: #111;">New Message Received</h2>
-                        <p>You have a new inquiry from the contact form.</p>
+                        <h2 style="color: #111;">You have a new enquiry </h2>
+                        <p>Details:</p>
                         <table class="details-table">
                             <tr><td class="label">Name:</td><td>{fullName}</td></tr>
                             <tr><td class="label">Email:</td><td>{email}</td></tr>
