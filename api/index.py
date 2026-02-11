@@ -157,6 +157,113 @@ async def apply(
             detail={"error": "Failed to send application", "debug": str(e)}
         )
 
+@app.post("/api/sayhello")
+async def sayhello(
+    fullName: str = Form(...),
+    email: str = Form(...),
+    phone: str = Form(...),
+    message: str = Form(...)
+):
+    try:
+        # Email credentials
+        email_user = os.getenv("EMAIL_USER")
+        email_pass = os.getenv("EMAIL_PASS")
+        email_host = os.getenv("EMAIL_HOST")
+        email_port = int(os.getenv("EMAIL_PORT", 587))
+        destination_email = os.getenv("DESTINATION_EMAIL") or "rahil@7ty7.ent"
+
+        # --- 1. COMPANY EMAIL (Notification) ---
+        company_msg = MIMEMultipart()
+        company_msg["From"] = f'"7ty7 Contact Form" <{email_user}>'
+        company_msg["To"] = destination_email
+        company_msg["Subject"] = f"New Inquiry from {fullName}"
+
+        company_html = f"""
+        <html>
+            <head>{EMAIL_STYLES}</head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <img src="cid:7ty7logo" class="logo" alt="7ty7 Logo" />
+                    </div>
+                    <div class="content">
+                        <h2 style="color: #111;">New Message Received</h2>
+                        <p>You have a new inquiry from the contact form.</p>
+                        <table class="details-table">
+                            <tr><td class="label">Name:</td><td>{fullName}</td></tr>
+                            <tr><td class="label">Email:</td><td>{email}</td></tr>
+                            <tr><td class="label">Phone:</td><td>{phone}</td></tr>
+                            <tr><td class="label">Message:</td><td>{message}</td></tr>
+                        </table>
+                    </div>
+                    <div class="footer">
+                        <p>Automated by 7ty7 Systems</p>
+                    </div>
+                </div>
+            </body>
+        </html>
+        """
+        company_msg.attach(MIMEText(company_html, "html"))
+
+        # --- 2. SENDER EMAIL (Acknowledgment) ---
+        sender_msg = MIMEMultipart()
+        sender_msg["From"] = f'"Team 7ty7" <{email_user}>'
+        sender_msg["To"] = email
+        sender_msg["Subject"] = f"Thanks for reaching out, {fullName.split(' ')[0]}!"
+
+        sender_html = f"""
+        <html>
+            <head>{EMAIL_STYLES}</head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <img src="cid:7ty7logo" class="logo" alt="7ty7 Logo" />
+                    </div>
+                    <div class="content">
+                        <p>Hey <span class="highlight">{fullName.split(' ')[0]}</span> 👋</p>
+                        <p>Thanks for getting in touch! We've received your message and our team is already on it.</p>
+                        <p>Whether it's about an upcoming event or just a friendly hello, we're excited to connect with you.</p>
+                        <p>Talk soon!</p>
+                        <br/>
+                        <p>Best,<br/>Team 7ty7</p>
+                    </div>
+                    <div class="footer">
+                        <p>&copy; 2026 7ty7 Entertainment. All rights reserved.</p>
+                    </div>
+                </div>
+            </body>
+        </html>
+        """
+        sender_msg.attach(MIMEText(sender_html, "html"))
+
+        # Attach logo to both
+        with open(LOGO_PATH, "rb") as f:
+            logo_data = f.read()
+            
+        for msg in [company_msg, sender_msg]:
+            logo_part = MIMEApplication(logo_data, Name="logo.png")
+            logo_part.add_header("Content-ID", "<7ty7logo>")
+            logo_part.add_header("Content-Disposition", "inline", filename="logo.png")
+            logo_part.add_header("Content-Type", "image/png")
+            msg.attach(logo_part)
+
+        # Send emails
+        with smtplib.SMTP(email_host, email_port) as server:
+            if email_port == 587:
+                server.starttls()
+            server.login(email_user, email_pass)
+            server.send_message(company_msg)
+            server.send_message(sender_msg)
+
+        return {"success": True, "message": "Message sent successfully!"}
+
+    except Exception as e:
+        print(f"Error: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail={"error": "Failed to send message", "debug": str(e)}
+        )
+
 @app.get("/")
 def read_root():
     return {"status": "7ty7 FastAPI is online"}
