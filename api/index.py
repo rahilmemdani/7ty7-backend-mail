@@ -58,7 +58,7 @@ async def apply(
         email_pass = os.getenv("EMAIL_PASS")
         email_host = os.getenv("EMAIL_HOST")
         email_port = int(os.getenv("EMAIL_PORT", 587))
-        destination_email = os.getenv("DESTINATION_EMAIL") or "rahil@7ty7.ent"
+        destination_email = os.getenv("DESTINATION_EMAIL") or "jobposting@7ty7.com"
 
         # --- 1. HR EMAIL (Notification) ---
         hr_msg = MIMEMultipart()
@@ -170,7 +170,7 @@ async def sayhello(
         email_pass = os.getenv("EMAIL_PASS")
         email_host = os.getenv("EMAIL_HOST")
         email_port = int(os.getenv("EMAIL_PORT", 587))
-        destination_email = os.getenv("DESTINATION_EMAIL") or "rahil@7ty7.ent"
+        destination_email = os.getenv("DESTINATION_EMAIL_SAYHELLO") or "mailbox@7ty7.com"
 
         # --- 1. COMPANY EMAIL (Notification) ---
         company_msg = MIMEMultipart()
