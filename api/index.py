@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -41,8 +41,21 @@ EMAIL_STYLES = """
 </style>
 """
 
+def send_smtp_emails(messages: list, host: str, port: int, user: str, password: str):
+    """Internal helper to send emails via SMTP in the background."""
+    try:
+        with smtplib.SMTP(host, port) as server:
+            if port == 587:
+                server.starttls()
+            server.login(user, password)
+            for msg in messages:
+                server.send_message(msg)
+    except Exception as e:
+        print(f"SMTP Background Error: {e}")
+
 @app.post("/api/apply")
 async def apply(
+    background_tasks: BackgroundTasks,
     name: str = Form(...),
     email: str = Form(...),
     position: str = Form(...),
@@ -140,13 +153,15 @@ async def apply(
             cv_part.add_header("Content-Disposition", f'attachment; filename="{attachment.filename}"')
             hr_msg.attach(cv_part)
 
-        # Send emails
-        with smtplib.SMTP(email_host, email_port) as server:
-            if email_port == 587:
-                server.starttls()
-            server.login(email_user, email_pass)
-            server.send_message(hr_msg)
-            server.send_message(app_msg)
+        # Schedule background task
+        background_tasks.add_task(
+            send_smtp_emails, 
+            [hr_msg, app_msg], 
+            email_host, 
+            email_port, 
+            email_user, 
+            email_pass
+        )
 
         return {"success": True, "message": "Application submitted successfully!"}
 
@@ -159,6 +174,7 @@ async def apply(
 
 @app.post("/api/sayhello")
 async def sayhello(
+    background_tasks: BackgroundTasks,
     fullName: str = Form(...),
     email: str = Form(...),
     phone: str = Form(...),
@@ -246,13 +262,15 @@ async def sayhello(
             logo_part.add_header("Content-Type", "image/png")
             msg.attach(logo_part)
 
-        # Send emails
-        with smtplib.SMTP(email_host, email_port) as server:
-            if email_port == 587:
-                server.starttls()
-            server.login(email_user, email_pass)
-            server.send_message(company_msg)
-            server.send_message(sender_msg)
+        # Schedule background task
+        background_tasks.add_task(
+            send_smtp_emails, 
+            [company_msg, sender_msg], 
+            email_host, 
+            email_port, 
+            email_user, 
+            email_pass
+        )
 
         return {"success": True, "message": "Message sent successfully!"}
 
