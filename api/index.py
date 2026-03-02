@@ -54,15 +54,15 @@ async def apply(
             raise HTTPException(status_code=400, detail="Missing required fields")
 
         # Email credentials
-        email_user = os.getenv("EMAIL_USER")
-        email_pass = os.getenv("EMAIL_PASS")
+        email_user = os.getenv("EMAIL_USER_JOB")
+        email_pass = os.getenv("EMAIL_PASS_JOB")
         email_host = os.getenv("EMAIL_HOST")
         email_port = int(os.getenv("EMAIL_PORT", 587))
-        destination_email = os.getenv("DESTINATION_EMAIL") or "jobposting@7ty7.com"
+        destination_email = os.getenv("DESTINATION_EMAIL_JOB") or "jobposting@7ty7.com"
 
         # --- 1. HR EMAIL (Notification) ---
         hr_msg = MIMEMultipart()
-        hr_msg["From"] = f'"7ty7 Talent Portal" <{email_user}>'
+        hr_msg["From"] = f'"7ty7 Talent Portal" <{destination_email}>'
         hr_msg["To"] = destination_email
         hr_msg["Subject"] = f"TAADAA! New Application Received | {position}"
 
@@ -94,7 +94,7 @@ async def apply(
 
         # --- 2. APPLICANT EMAIL (Confirmation) ---
         app_msg = MIMEMultipart()
-        app_msg["From"] = f'"Team 7ty7" <{email_user}>'
+        app_msg["From"] = f'"Team 7ty7" <{destination_email}>'
         app_msg["To"] = email
         app_msg["Subject"] = f"Thanks for reaching out, {name.split(' ')[0]}!"
 
@@ -166,15 +166,15 @@ async def sayhello(
 ):
     try:
         # Email credentials
-        email_user = os.getenv("EMAIL_USER")
-        email_pass = os.getenv("EMAIL_PASS")
+        email_user = os.getenv("EMAIL_USER_SAYHELLO")
+        email_pass = os.getenv("EMAIL_PASS_SAYHELLO")
         email_host = os.getenv("EMAIL_HOST")
         email_port = int(os.getenv("EMAIL_PORT", 587))
         destination_email = os.getenv("DESTINATION_EMAIL_SAYHELLO") or "mailbox@7ty7.com"
 
         # --- 1. COMPANY EMAIL (Notification) ---
         company_msg = MIMEMultipart()
-        company_msg["From"] = f'"7ty7 Contact Form" <{email_user}>'
+        company_msg["From"] = f'"7ty7 Contact Form" <{destination_email}>'
         company_msg["To"] = destination_email
         company_msg["Subject"] = f"New Inquiry from {fullName}"
 
@@ -207,7 +207,7 @@ async def sayhello(
 
         # --- 2. SENDER EMAIL (Acknowledgment) ---
         sender_msg = MIMEMultipart()
-        sender_msg["From"] = f'"Team 7ty7" <{email_user}>'
+        sender_msg["From"] = f'"Team 7ty7" <{destination_email}>'
         sender_msg["To"] = email
         sender_msg["Subject"] = f"Thanks for reaching out, {fullName.split(' ')[0]}!"
 
