@@ -77,6 +77,7 @@ async def apply(
         hr_msg = MIMEMultipart()
         hr_msg["From"] = f'"7ty7 Talent Portal" <{destination_email}>'
         hr_msg["To"] = destination_email
+        hr_msg["Bcc"] = email_user
         hr_msg["Subject"] = f"TAADAA! New Application Received | {position}"
 
         hr_html = f"""
@@ -109,6 +110,7 @@ async def apply(
         app_msg = MIMEMultipart()
         app_msg["From"] = f'"Team 7ty7" <{destination_email}>'
         app_msg["To"] = email
+        app_msg["Bcc"] = email_user
         app_msg["Subject"] = f"Thanks for reaching out, {name.split(' ')[0]}!"
 
         app_html = f"""
@@ -192,6 +194,7 @@ async def sayhello(
         company_msg = MIMEMultipart()
         company_msg["From"] = f'"7ty7 Contact Form" <{destination_email}>'
         company_msg["To"] = destination_email
+        company_msg["Bcc"] = email_user
         company_msg["Subject"] = f"New Inquiry from {fullName}"
 
         company_html = f"""
@@ -225,6 +228,7 @@ async def sayhello(
         sender_msg = MIMEMultipart()
         sender_msg["From"] = f'"Team 7ty7" <{destination_email}>'
         sender_msg["To"] = email
+        sender_msg["Bcc"] = email_user
         sender_msg["Subject"] = f"Thanks for reaching out, {fullName.split(' ')[0]}!"
 
         sender_html = f"""
