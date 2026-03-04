@@ -194,7 +194,7 @@ async def sayhello(
         company_msg["From"] = f'"7ty7 Contact Form" <{destination_email}>'
         company_msg["To"] = destination_email
         # company_msg["Bcc"] = email_user
-        company_msg["Subject"] = f"New Inquiry from {fullName}"
+        company_msg["Subject"] = f"New Enquiry from {fullName}"
 
         company_html = f"""
         <html>
@@ -205,7 +205,7 @@ async def sayhello(
                         <img src="cid:7ty7logo" class="logo" alt="7ty7 Logo" />
                     </div>
                     <div class="content">
-                        <h2 style="color: #111;">You have a new enquiry </h2>
+                        <h2 style="color: #111; font-weight: 300;">You have a new enquiry</h2>
                         <p>Details:</p>
                         <table class="details-table">
                             <tr><td class="label">Name:</td><td>{fullName}</td></tr>
